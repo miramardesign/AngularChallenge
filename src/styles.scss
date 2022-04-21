@@ -1,4 +1,50 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.pull-right {
+  float: right;
+}
+
+.m-1 {
+  margin: 0.5em;
+}
+
+.mt-1 {
+  margin-top: 0.5em;
+}
+
+.clear-both {
+  clear: both;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.d-none {
+  display: none;
+}
+
+.icon-sm {
+  font-size: 20px;
+  position: relative;
+  top: 5px;
+}
+
+.icon-cal {
+  left: -18px;
+  top: 2px;
+}
+
+.not-current .icon-cal,
+.past-current-month .icon-cal {
+  display: none;
+}

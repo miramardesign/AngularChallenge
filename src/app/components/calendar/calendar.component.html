@@ -11,3 +11,110 @@
 
 <!-- Create the calendar here -->
 <!-- ======================== -->
+
+
+<!-- https://git.jobsity.com/jobsity/AngularChallenge todo add -->
+
+<!-- https://www.geeksforgeeks.org/design-a-calendar-using-html-and-css/ -->
+
+<!-- todo weahter and location -->
+
+<div class="d-none debug">
+  <!-- currentCalenderMonthArray {{ currentCalenderMonthArray | json }} ==========
+  <br />
+  dateSelections {{ dateSelections | json }} ========== <br /> -->
+
+  persistenceData
+  {{persistenceData | json}}
+</div>
+
+<h2 class="text-center">
+  <a (click)="viewPrevMonth(now)" class="cursor-pointer">&lt;</a>
+
+  {{ currentMonth }} {{ currentFullYear }}
+
+  <a (click)="viewNextMonth(now)" class="cursor-pointer">&gt;</a>
+</h2>
+
+<section class="flex-container calender-bdr" class="selected-day-of-week-{{
+    dateSelections?.selectedDayOfWeek
+  }} selected-week-num-{{ dateSelections?.selectedWeekNum }}">
+  <article class="flex-day day-of-week day-of-week-0 bdr-bot-blk day-of-week-label">
+    Sunday
+  </article>
+  <article class="flex-day day-of-week day-of-week-1 bdr-bot-blk day-of-week-label">
+    Monday
+  </article>
+  <article class="flex-day day-of-week day-of-week-2 bdr-bot-blk day-of-week-label">
+    Tuesday
+  </article>
+  <article class="flex-day day-of-week day-of-week-3 bdr-bot-blk day-of-week-label">
+    Wednesday
+  </article>
+  <article class="flex-day day-of-week day-of-week-4 bdr-bot-blk day-of-week-label">
+    Thurday
+  </article>
+  <article class="flex-day day-of-week day-of-week-5 bdr-bot-blk day-of-week-label">
+    Friday
+  </article>
+  <article class="flex-day day-of-week day-of-week-6 bdr-bot-blk day-of-week-label">
+    Saturday
+  </article>
+
+  <article *ngFor="let calendarLayoutDay of currentCalenderMonthArray; index as i" class="event-cal flex-day bdr-bot-blk  day-of-week-{{ i % 7 }} week-num-{{
+      i / 7 + '' | slice: 0:1
+    }}" [ngClass]="{
+      'not-current': calendarLayoutDay.dateType !== 'current' && calendarLayoutDay.dateType !== 'currentpast',
+      'past-current-month': calendarLayoutDay.dateType === 'currentpast',
+   
+      selected: calendarLayoutDay.selected
+    }">
+    <h1 class="cursor-pointer" (click)="addEvent(calendarLayoutDay, i, location)" title="click to manage reminders">
+      {{ calendarLayoutDay.day }} &nbsp;  <mat-icon class="icon-sm icon-cal">add</mat-icon>
+    </h1>
+
+    <!-- form to edit reminder event -->
+    <app-reminder-form-inline *ngIf="i === dateSelections?.indexSelected" [formData]="formData"
+      [calendarLayoutDay]="calendarLayoutDay"
+       [formModeData]="formModeData" 
+      [daysInMonth]="daysInMonth" 
+      (reminderFormSave)="saveEvent($event, calendarLayoutDay)"      
+      (reminderFormCancel)="cancelEvent()">
+    </app-reminder-form-inline>
+   
+    <section *ngFor="let event of calendarLayoutDay.events; index as evtI" class="flex-day-edit"
+      [ngClass]="{ 'false-todo': false }">
+      <section class="event-card">
+        <!-- //shows on preview -->
+        <ul class="events-list">
+          <li>
+            {{ event.time }} <strong>{{ event.desc }}</strong>
+
+            <span *ngIf="i === dateSelections?.indexSelected">
+              City: {{ event.city }} &mdash; Weather: {{ event.weather }}
+              <app-weather-icon [weather]="event.weather"></app-weather-icon>
+
+              <br />
+              <mat-icon  (click)="
+                  rmEvent(
+                    calendarLayoutDay.day,
+                    evtI,
+                    calendarLayoutDay,
+                    persistenceData
+                  )
+                " class="cursor-pointer" title="click to delete">delete</mat-icon>&nbsp;
+
+
+              <mat-icon (click)="editEvent(evtI, calendarLayoutDay)"
+                class="cursor-pointer" title="click to edit">edit</mat-icon>
+                
+          
+                &nbsp;
+            </span>
+          </li>
+        </ul>
+        <i class="bullet"></i>
+      </section>
+    </section>
+  </article>
+</section>

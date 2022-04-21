@@ -1,4 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
 
 import { ReminderFormComponent } from './reminder-form.component';
 
@@ -8,6 +9,8 @@ describe('ReminderFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [FormsModule],
+
       declarations: [ ReminderFormComponent ]
     })
     .compileComponents();
@@ -22,4 +25,7 @@ describe('ReminderFormComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  //tests moved to inline version.
+
 });
