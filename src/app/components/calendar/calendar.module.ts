@@ -4,7 +4,6 @@ import { CommonModule } from '@angular/common';
 import { CalendarRoutingModule } from './calendar-routing.module';
 import { CalendarComponent } from './calendar.component';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
-import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 import { ReminderFormComponent } from '../reminder-form/reminder-form.component';
 import { ReminderFormModule } from '../reminder-form/reminder-form.module';
@@ -23,7 +22,6 @@ import { ReminderFormInlineComponent } from '../reminder-form-inline/reminder-fo
     CommonModule,
     CalendarRoutingModule,
     SharedModule,
-    FontAwesomeModule,
 
     ReminderFormModule,
   ],

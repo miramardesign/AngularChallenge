@@ -70,9 +70,8 @@
       selected: calendarLayoutDay.selected
     }">
     <h1 class="cursor-pointer" (click)="addEvent(calendarLayoutDay, i, location)" title="click to manage reminders">
-      {{ calendarLayoutDay.day }} &nbsp;
+      {{ calendarLayoutDay.day }} &nbsp;  <mat-icon>add</mat-icon>
     </h1>
-
 
     <!-- form to edit reminder event -->
     <app-reminder-form-inline *ngIf="i === dateSelections?.indexSelected" [formData]="formData"
@@ -96,17 +95,22 @@
               <app-weather-icon [weather]="event.weather"></app-weather-icon>
 
               <br />
-              <fa-icon [icon]="icons.faTrash" (click)="
+              <mat-icon  (click)="
                   rmEvent(
                     calendarLayoutDay.day,
                     evtI,
                     calendarLayoutDay,
                     persistenceData
                   )
-                " class="cursor-pointer" title="click to delete"></fa-icon>&nbsp;
+                " class="cursor-pointer" title="click to delete">trash</mat-icon>&nbsp;
 
-              <fa-icon [icon]="icons.faPenToSquare" (click)="editEvent(evtI, calendarLayoutDay)"
-                class="cursor-pointer" title="click to edit"></fa-icon>&nbsp;
+
+              <mat-icon (click)="editEvent(evtI, calendarLayoutDay)"
+                class="cursor-pointer" title="click to edit">trash</mat-icon>
+                
+                <mat-icon>trash</mat-icon>
+                
+                &nbsp;
             </span>
           </li>
         </ul>
