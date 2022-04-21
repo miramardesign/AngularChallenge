@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ReminderFormComponent } from './reminder-form-inline.component';
+import { ReminderFormInlineComponent } from './reminder-form-inline.component';
 
 describe('ReminderFormComponent', () => {
-  let component: ReminderFormComponent;
-  let fixture: ComponentFixture<ReminderFormComponent>;
+  let component: ReminderFormInlineComponent;
+  let fixture: ComponentFixture<ReminderFormInlineComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ReminderFormComponent ]
+      declarations: [ ReminderFormInlineComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ReminderFormComponent);
+    fixture = TestBed.createComponent(ReminderFormInlineComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

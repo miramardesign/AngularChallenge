@@ -2,3 +2,22 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.pull-right{
+    float: right;
+}
+
+
+.m-1{
+    margin: .5em;
+}
+
+.mt-1{
+    margin: .5em;
+}
+
+.clear-both{
+    clear: both;
+}
+
+.d-none{display: none;}
