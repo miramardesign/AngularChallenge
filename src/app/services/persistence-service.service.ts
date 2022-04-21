@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { CalendarLayoutData, PersistenceData } from '../models/calender-models';
+import { CalendarLayoutData, PersistenceData } from '../interfaces/calender-models';
 
 @Injectable({
   providedIn: 'root',

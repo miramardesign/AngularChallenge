@@ -28,5 +28,4 @@ describe('ReminderFormComponent', () => {
 
   //tests moved to inline version.
 
-
 });

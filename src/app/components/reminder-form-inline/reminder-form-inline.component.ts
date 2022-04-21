@@ -2,7 +2,7 @@ import { Component, EventEmitter, Inject, Input, OnInit, Output } from '@angular
 import { NgForm } from '@angular/forms';
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Reminder } from 'src/app/interfaces/reminder';
-import { CalendarEvent, FormModeData, CalendarLayoutData } from 'src/app/models/calender-models';
+import { CalendarEvent, FormModeData, CalendarLayoutData } from 'src/app/interfaces/calender-models';
 import { ConstantService } from 'src/app/services/calender-constants';
 import * as validate from 'validate.js';
 import { rangeFor } from '../../helpers/helper-fns';
