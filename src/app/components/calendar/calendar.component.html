@@ -29,11 +29,11 @@
 </div>
 
 <h2 class="text-center">
-  <a (click)="prevMonth(now)" class="cursor-pointer">&lt;</a>
+  <a (click)="viewPrevMonth(now)" class="cursor-pointer">&lt;</a>
 
   {{ currentMonth }} {{ currentFullYear }}
 
-  <a (click)="nextMonth(now)" class="cursor-pointer">&gt;</a>
+  <a (click)="viewNextMonth(now)" class="cursor-pointer">&gt;</a>
 </h2>
 
 <section class="flex-container calender-bdr" class="selected-day-of-week-{{

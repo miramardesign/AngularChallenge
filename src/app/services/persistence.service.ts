@@ -4,7 +4,7 @@ import { CalendarLayoutData, PersistenceData } from '../interfaces/calender-mode
 @Injectable({
   providedIn: 'root',
 })
-export class PersistenceServiceService {
+export class PersistenceService {
   constructor() {}
 
   /**

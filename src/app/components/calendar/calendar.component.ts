@@ -15,9 +15,7 @@ import {
   PersistenceData,
 } from 'src/app/interfaces/calender-models';
 import { kToF, rangeFor } from 'src/app/helpers/helper-fns';
-import { ConstantService } from 'src/app/services/calender-constants';
-import { PersistenceServiceService } from 'src/app/services/persistence-service.service';
-import * as icons from '@fortawesome/free-solid-svg-icons';
+import { PersistenceService } from 'src/app/services/persistence.service';
 
 @Component({
   selector: 'app-calendar',
@@ -26,11 +24,9 @@ import * as icons from '@fortawesome/free-solid-svg-icons';
 })
 export class CalendarComponent implements OnInit, OnDestroy {
   onDestroy$ = new Subject<boolean>();
-
-  
+ 
   range = rangeFor;
   now: Date;
-  icons = icons;
 
   location = {
     lat: 0,
@@ -39,7 +35,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   persistenceData: PersistenceData.RootObject = {};
 
-  availableTimesList: string[];
 
   currentMonth: string = '';
   currentDay: number = 0;
@@ -73,15 +68,11 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   constructor(
     private calendarService: CalendarService,
-
     private weatherService: WeatherService,
-
     private matDialog: MatDialog,
-    private persistenceService: PersistenceServiceService,
-    private constantService: ConstantService
+    private persistenceService: PersistenceService
   ) {
     this.now = new Date();
-    this.availableTimesList = this.constantService.AVAILABLE_TIMES_LIST;
   }
 
   ngOnInit(): void {
@@ -135,7 +126,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
    * change month to the previous
    * @param date the date to subtract
    */
-  prevMonth(date: Date) {
+  viewPrevMonth(date: Date) {
     this.now = moment(date).subtract(1, 'M').toDate();
     this.initCal(this.now);
     this.resetDateSelections();
@@ -145,7 +136,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
    * change month to the next
    * @param date the date to add
    */
-  nextMonth(date: Date) {
+  viewNextMonth(date: Date) {
     this.now = moment(date).add(1, 'M').toDate();
     this.initCal(this.now);
     this.resetDateSelections();
@@ -200,15 +191,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   /**
-   *
-   * @param layoutData
-   * @param i
-   * @param location
+   * gets the form ready to edit the event.
+   * @param layoutData the data of the day
+   * @param dayNumber day clicked on
+   * @param location their location api data.
    * @returns
    */
-
-  addEvent(layoutData: CalendarLayoutData, i: number, location: any) {
-    this.deselectAllDays();
+  addEvent(layoutData: CalendarLayoutData, dayNumber: number, location: any) {
+    //this.deselectAllDays();
 
     //if they click on extra days on end of month.
     if (layoutData.dateType !== 'current') {
@@ -233,9 +223,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
     layoutData.selected = true;
 
     this.dateSelections = {
-      selectedDayOfWeek: i % 7,
-      selectedWeekNum: Math.floor(i / 7),
-      indexSelected: i,
+      selectedDayOfWeek: dayNumber % 7,
+      selectedWeekNum: Math.floor(dayNumber / 7),
+      indexSelected: dayNumber,
     };
   }
 
@@ -268,64 +258,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
     };
   }
 
-  //wasnt runnning fast
-  deselectAllDays() {
-    // this.currentCalenderMonthArray.forEach((item) => {
-    //   item.selected = false;
-    // });
-  }
-
   /**
    * main save to layout ui and to persistence from form,
    * @param data emitted data from form  { layoutData, formData, formModeData }
    */
   async saveEvent(data: any, calendarLayoutDayOriginal: any) {
-    this.deselectAllDays();
-    let { layoutData, formData, formModeData } = data;
-    const persistenceData: any = this.persistenceData;
 
-    console.log(' persistenceData ', persistenceData);
-
-    //if editing change a specific index with the form data
-    if (formModeData.mode === 'edit') {
-      //if they updated the day in the droppy down.
-      if (formModeData.dayToUpdate !== -1) {
-        //write new one
-        layoutData.day = formModeData.dayToUpdate;
-
-        //remove old event.
-        console.log(layoutData.events, '-----');
-        // remove old event.
-        await this.rmEvent(
-          calendarLayoutDayOriginal.day,
-          formModeData.evtI,
-          calendarLayoutDayOriginal,
-          persistenceData
-        );
-      } else {
-        //change values without updating..
-        layoutData.events[formModeData.evtI] = formData;
-      }
-    } else {
-      //push new data into the events obj so it shows in UI
-      layoutData.events.push(formData);
-    }
-
-    //setup the key to save it as "day-5" inside the localStorage
-    let monthKey = await this.persistenceService.getMonthKeyByLayoutData(
-      layoutData
-    );
-    let dayKey: any = 'day-' + layoutData.day;
-
-    //check if existing
-    if (!persistenceData[dayKey]) {
-      persistenceData[dayKey] = {};
-    }
-
-    persistenceData[dayKey].events = layoutData.events;
-
-    //save to localStorage3
-    await this.persistenceService.saveToPersistence(monthKey, persistenceData);
+    this.calendarService.saveEvent(data, calendarLayoutDayOriginal, this.persistenceData);
 
     this.resetDateSelections();
 
@@ -344,27 +283,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
     layoutData: CalendarLayoutData,
     persistenceData: any
   ) {
-    let layoutDataCopy = { ...layoutData };
-    let persistenceDataCopy = { ...persistenceData };
-
-    console.info('removing event with id', evtI, layoutDataCopy);
-
-    //setup the key to save it as "day-5" inside the localStorage
-    let monthKey =
-      this.persistenceService.getMonthKeyByLayoutData(layoutDataCopy);
-    let dayKey: string = 'day-' + day;
-
-    persistenceDataCopy[dayKey].events.splice(evtI, 1);
-    //save to localStorage
-    await this.persistenceService.saveToPersistence(
-      monthKey,
-      persistenceDataCopy
-    );
-
-    //update in UI;
-    layoutData.events = persistenceData[dayKey].events;
-    //should exist since edit.
-
+   
+    this.calendarService.rmEvent(day, evtI, layoutData, persistenceData);
     //cleanup
     this.resetDateSelections();
   }

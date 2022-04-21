@@ -4,6 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Reminder } from '../interfaces/reminder';
 import { CalendarLayoutData, CalendarViewDateType } from '../interfaces/calender-models';
 import { ConstantService } from './calender-constants';
+import { PersistenceService } from './persistence.service';
 
 
 @Injectable({
@@ -13,7 +14,8 @@ export class CalendarService {
 
   reminders: Reminder[] = [];
 
-  constructor(private constantService: ConstantService) { }
+  constructor(private constantService: ConstantService,
+    private persistenceService: PersistenceService) { }
 
   create(data: Reminder): Reminder {
     return data;
@@ -32,6 +34,41 @@ export class CalendarService {
     console.log(reminderId);
     return true;
   }
+
+  /**
+   * clicked on trash icon
+   * @param evtI index of the event to delete
+   * @param calendarLayoutDay day object to affect
+   */
+   async rmEvent(
+    day: number,
+    evtI: number,
+    layoutData: CalendarLayoutData,
+    persistenceData: any
+  ) {
+    let layoutDataCopy = { ...layoutData };
+    let persistenceDataCopy = { ...persistenceData };
+
+    console.info('removing event with id', evtI, layoutDataCopy);
+
+    //setup the key to save it as "day-5" inside the localStorage
+    let monthKey =
+      this.persistenceService.getMonthKeyByLayoutData(layoutDataCopy);
+    let dayKey: string = 'day-' + day;
+
+    persistenceDataCopy[dayKey].events.splice(evtI, 1);
+    //save to localStorage
+    await this.persistenceService.saveToPersistence(
+      monthKey,
+      persistenceDataCopy
+    );
+
+    //update in UI;
+    layoutData.events = persistenceData[dayKey].events;
+    //should exist since edit.
+
+   
+   }
 
   /**
    * gets day of week of first day of month so it can be padded
@@ -148,6 +185,57 @@ export class CalendarService {
   
       return currentCalenderLayoutData;
     }
+
+  /**
+   * main save to layout ui and to persistence from form,
+   * @param data emitted data from form  { layoutData, formData, formModeData }
+   */
+  async saveEvent(data: any, calendarLayoutDayOriginal: any, persistenceData: any) {
+    let { layoutData, formData, formModeData, } = data;
+
+
+    //if editing change a specific index with the form data
+    if (formModeData.mode === 'edit') {
+      //if they updated the day in the droppy down.
+      if (formModeData.dayToUpdate !== -1) {
+        //write new one
+        layoutData.day = formModeData.dayToUpdate;
+
+        //remove old event.
+        // remove old event.
+        await this.rmEvent(
+          calendarLayoutDayOriginal.day,
+          formModeData.evtI,
+          calendarLayoutDayOriginal,
+          persistenceData
+        );
+      } else {
+        //change values without updating..
+        layoutData.events[formModeData.evtI] = formData;
+      }
+    } else {
+      //push new data into the events obj so it shows in UI
+      layoutData.events.push(formData);
+    }
+
+    //setup the key to save it as "day-5" inside the localStorage
+    let monthKey = await this.persistenceService.getMonthKeyByLayoutData(
+      layoutData
+    );
+    let dayKey: any = 'day-' + layoutData.day;
+
+    //check if existing
+    if (!persistenceData[dayKey]) {
+      persistenceData[dayKey] = {};
+    }
+
+    persistenceData[dayKey].events = layoutData.events;
+
+    //save to localStorage3
+    await this.persistenceService.saveToPersistence(monthKey, persistenceData);
+
+ 
+  }
   
 
 }
