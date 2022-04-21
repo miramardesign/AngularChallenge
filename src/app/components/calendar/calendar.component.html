@@ -75,13 +75,13 @@
 
 
     <!-- form to edit reminder event -->
-    <app-reminder-form *ngIf="i === dateSelections?.indexSelected" [formData]="formData"
+    <app-reminder-form-inline *ngIf="i === dateSelections?.indexSelected" [formData]="formData"
       [calendarLayoutDay]="calendarLayoutDay"
        [formModeData]="formModeData" 
       [daysInMonth]="daysInMonth" 
       (reminderFormSave)="saveEvent($event, calendarLayoutDay)"      
       (reminderFormCancel)="cancelEvent()">
-    </app-reminder-form>
+    </app-reminder-form-inline>
    
     <section *ngFor="let event of calendarLayoutDay.events; index as evtI" class="flex-day-edit"
       [ngClass]="{ 'false-todo': false }">

@@ -4,14 +4,18 @@ import { CommonModule } from '@angular/common';
 import { CalendarRoutingModule } from './calendar-routing.module';
 import { CalendarComponent } from './calendar.component';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 import { ReminderFormComponent } from '../reminder-form/reminder-form.component';
 import { ReminderFormModule } from '../reminder-form/reminder-form.module';
 import { WeatherIconComponent } from '../weather-icon/weather-icon.component';
+import { ReminderFormInlineComponent } from '../reminder-form-inline/reminder-form-inline.component';
 
 @NgModule({
   declarations: [
     CalendarComponent,
     WeatherIconComponent,
+   // ReminderFormInlineComponent,
     ReminderFormComponent,
   ],
   exports: [CalendarComponent],
@@ -19,8 +23,10 @@ import { WeatherIconComponent } from '../weather-icon/weather-icon.component';
     CommonModule,
     CalendarRoutingModule,
     SharedModule,
+    FontAwesomeModule,
+
     ReminderFormModule,
   ],
-  entryComponents: [ReminderFormComponent],
+  // entryComponents: [ReminderFormComponent],
 })
 export class CalendarModule { }
