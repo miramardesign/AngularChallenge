@@ -1,1 +1,71 @@
-<p>Reminder form will be here :)</p>
+
+
+<i class="d-none debug">
+
+    {{formModeData | json}}
+    ===
+    calendarLayoutDay
+    {{calendarLayoutDay | json}}
+    ==
+    formData
+    {{formData | json}}
+  
+  
+  </i>
+  <fieldset class="reminder-form m-1">
+    <legend [ngSwitch]="formModeData?.mode">
+      <div *ngSwitchCase="''">Enter New Reminder</div>
+      <div *ngSwitchCase="'create'">Enter New Reminder</div>
+      <div *ngSwitchCase="'edit'">Edit Existing Reminder</div>
+    </legend>
+  
+    <form #f="ngForm" (ngSubmit)="
+        onSubmit(f, calendarLayoutDayCopy, formData, formModeData)
+      " novalidate
+      class="reminder-form-form"
+      >
+  
+      <input class="form-field half" id="desc" type="text" maxlength="30" minlength="2" [(ngModel)]="formData.desc" name="desc"
+        placeholder="enter reminder text" required />
+  
+      <select class="form-field half" name="time" [(ngModel)]="formData.time" [minlength]="3" required>
+        <option selected value="-1">select reminder time</option>
+        <option *ngFor="let time of availableTimesList" [value]="time">
+          {{ time }}
+        </option>
+      </select>
+  
+      <!--  -->
+      <select [(ngModel)]="formModeData.dayToUpdate" *ngIf="formModeData && formModeData?.mode === 'edit'"
+        class="form-field half" name="change-day">
+        <option selected value="-1">change day *optional</option>
+        <option *ngFor="let day of range(1, daysInMonth)" [value]="day">
+          {{ day }}
+        </option>
+      </select>
+  
+      <!-- -2nd row---- -->
+  
+      <input class="form-field half" [(ngModel)]="formData.city" name="city" type="text" maxlength="30" minlength="2"
+        placeholder="enter reminder place/city" required />
+  
+      <input class="form-field half" [(ngModel)]="formData.weather" name="weather" type="hidden" maxlength="40"
+        minlength="3" placeholder="" readonly="readonly" disabled="disabled" />
+  
+      <div class="form-field no-bdr half pull-right">
+        {{ formData.weather }}
+        <app-weather-icon [weather]="formData.weather"></app-weather-icon>
+      </div>
+  
+      <!-- -->
+  
+      <div class="clear-both"></div>
+      <section class="controls">
+        <button class="submit-reminder" type="submit" [disabled]="!f.valid">Submit</button>
+  
+        <button type="reset" class="form-field" (click)="cancelEvent()">
+          Cancel
+        </button>
+      </section>
+    </form>
+  </fieldset>

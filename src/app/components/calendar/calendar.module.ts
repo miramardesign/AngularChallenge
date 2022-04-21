@@ -6,10 +6,14 @@ import { CalendarComponent } from './calendar.component';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
 import { ReminderFormComponent } from '../reminder-form/reminder-form.component';
 import { ReminderFormModule } from '../reminder-form/reminder-form.module';
-
+import { WeatherIconComponent } from '../weather-icon/weather-icon.component';
 
 @NgModule({
-  declarations: [CalendarComponent],
+  declarations: [
+    CalendarComponent,
+    WeatherIconComponent,
+    ReminderFormComponent,
+  ],
   exports: [CalendarComponent],
   imports: [
     CommonModule,

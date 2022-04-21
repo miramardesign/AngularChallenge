@@ -1,3 +1,136 @@
 .spacer {
   flex: 1 1 auto;
 }
+
+$lightBlue: #1976d2;
+$lightText: white;
+$lightGrey: #f2f2f2;
+$lightGreyText: #d7d7d7;
+
+$flexWidthSelected: 60%;
+$flexWidthUnselected: calc((100% - $flexWidthSelected) / 6);
+
+.flex-container {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.event-cal {
+  min-height: 100px;
+}
+
+.flex-day {
+  //looks ugly when opening, looks good when closing. since flexboxes shuffle
+  //transition: all 3s;
+ 
+
+  flex: 1 1 calc(100% / 7);
+  margin: 0;
+  h1 {
+    padding-left: 6px;
+    margin-top: 2px;
+  }
+  box-sizing: border-box;
+}
+
+@mixin flex-selected-day {
+
+  flex: 1 1 $flexWidthSelected;
+  max-width: 70%;
+  h1 {
+    opacity: 1;
+  }
+}
+
+.selected-day-of-week-0,
+.selected-day-of-week-1,
+.selected-day-of-week-2,
+.selected-day-of-week-3,
+.selected-day-of-week-4,
+.selected-day-of-week-5,
+.selected-day-of-week-6 {
+  .flex-day {
+    flex: 1 1 6%;
+    max-width: 6%;
+    max-height: 24px;
+    h1 {
+      opacity: 0.5;
+    }
+    overflow: hidden;
+    animation: flexanimation-unselected 2s ease-out 0s 1 normal forwards;
+
+
+    &.selected {
+      border: 4px solid $lightBlue;
+      &h1 {
+        display: block;
+      }
+    }
+  }
+}
+
+$columns: 6;
+
+@for $i from 0 through $columns {
+  .selected-week-num-#{$i} {
+    .week-num-#{$i} {
+      min-height: 460px;
+      max-height: fit-content;
+    }
+  }
+
+  .selected-day-of-week-#{$i} {
+    .flex-day.day-of-week-#{$i} {
+      @include flex-selected-day;
+    }
+  }
+}
+
+//weekends are made to party.
+.day-of-week-0,
+.day-of-week-6 {
+  background-color: $lightGrey;
+  h1 {
+    color: $lightBlue;
+  }
+}
+
+.day-of-week-label {
+  text-align: center;
+  background-color: $lightBlue;
+  color: $lightText;
+  padding-bottom: 4px;
+  font-weight: bold;
+}
+
+.not-current {
+  h1 {
+    color: $lightGreyText;
+  }
+}
+
+//want the weekends to still be blue but faded.
+.past-current-month
+{
+  opacity: .7;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.calender-bdr {
+  border: 1px solid black;
+  border-right: none;
+  border-bottom: none;
+}
+
+.bdr-bot-blk {
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+}
+
+ul.events-list {
+  margin-left: -16px;
+}
+
