@@ -9,10 +9,9 @@ import { Reminder } from 'src/app/interfaces/reminder';
 })
 export class ReminderFormComponent implements OnInit {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: Reminder) { }
-
+  // constructor(@Inject(MAT_DIALOG_DATA) public data: Reminder) { }
+  constructor() {}
   ngOnInit(): void {
-    console.log(this.data);
   }
 
 }

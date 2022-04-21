@@ -1,4 +1,8 @@
+import { CommonModule } from '@angular/common';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from 'src/app/modules/shared/shared.module';
+import { WeatherIconModule } from '../weather-icon/weather-icon.module';
 
 import { ReminderFormInlineComponent } from './reminder-form-inline.component';
 
@@ -8,6 +12,13 @@ describe('ReminderFormComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
+      imports: [
+        FormsModule,
+        SharedModule,
+        CommonModule,
+        WeatherIconModule,
+      ],
+
       declarations: [ ReminderFormInlineComponent ]
     })
     .compileComponents();
