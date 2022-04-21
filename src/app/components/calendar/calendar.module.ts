@@ -1,30 +1,33 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
-import { CalendarRoutingModule } from './calendar-routing.module';
-import { CalendarComponent } from './calendar.component';
+import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/modules/shared/shared.module';
-
+import { ReminderFormInlineModule } from '../reminder-form-inline/reminder-form-inline.module';
 import { ReminderFormComponent } from '../reminder-form/reminder-form.component';
 import { ReminderFormModule } from '../reminder-form/reminder-form.module';
-import { WeatherIconComponent } from '../weather-icon/weather-icon.component';
-import { ReminderFormInlineComponent } from '../reminder-form-inline/reminder-form-inline.component';
+import { WeatherIconModule } from '../weather-icon/weather-icon.module';
+import { CalendarRoutingModule } from './calendar-routing.module';
+import { CalendarComponent } from './calendar.component';
+
+
+
 
 @NgModule({
   declarations: [
     CalendarComponent,
-    WeatherIconComponent,
-   // ReminderFormInlineComponent,
-    ReminderFormComponent,
+
   ],
   exports: [CalendarComponent],
   imports: [
     CommonModule,
+    FormsModule,
+
     CalendarRoutingModule,
     SharedModule,
-
+    ReminderFormInlineModule,
     ReminderFormModule,
+    WeatherIconModule,
   ],
-  // entryComponents: [ReminderFormComponent],
+  entryComponents: [ReminderFormComponent],
 })
 export class CalendarModule { }
